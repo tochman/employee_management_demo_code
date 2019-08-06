@@ -1,9 +1,17 @@
 /// <reference types="cypress" />
 import EmployeeList from '../../src/components/EmployeeList'
 import React from 'react'
+import axios from 'axios'
 
 describe('<EmployeeList />', () => {
-  it('works', () => {
+
+  it('should fetch emloyee data from back-end using Axios', () => {
+    cy.spy(axios, 'get').as('axios')
+    cy.mount(<EmployeeList />)
+    cy.get('@axios').should('have.been.calledOnce')
+  });
+
+  it('displays 5 employees in "listitem"', () => {
     const employeesFactory = [
       {
         "id": 1,
@@ -42,8 +50,8 @@ describe('<EmployeeList />', () => {
       }
     ]
     cy.mount(<EmployeeList />)
-    cy.get(<EmployeeList />)
-      .invoke('setState', { employees: employeesFactory })
+    // cy.get(<EmployeeList />)
+    //   .invoke('setState', { employees: employeesFactory })
     cy.get(<EmployeeList />)
       .its('state')
       .should('deep.equal', { employees: employeesFactory })
@@ -51,5 +59,13 @@ describe('<EmployeeList />', () => {
       .should('have.length', 5)
       .first()
       .should('contain', 'George Bluth')
+      .next()
+      .should('contain', 'Janet Weaver')
+      .next()
+      .should('contain', 'Emma Wong')
+      .next()
+      .should('contain', 'Eve Holt')
+      .next()
+      .should('contain', 'Charles Morris')
   })
 });
