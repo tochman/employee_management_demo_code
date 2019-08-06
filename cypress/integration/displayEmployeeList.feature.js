@@ -8,7 +8,7 @@ describe('index.html', () => {
 
   it('displays info on 5 employees', () => {
     cy.get('section[id="main"]').within(() => {
-      cy.get('li')
+      cy.get('div[role="listitem"]')
         .should('have.length', 5)
     })
   });
